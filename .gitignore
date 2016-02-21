@@ -4,3 +4,4 @@
 client_secret.json
 vendor/*
 data/*
+composer.phar

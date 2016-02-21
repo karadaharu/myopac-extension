@@ -1,0 +1,5 @@
+*~
+.DS_Store
+*.app
+client_secret.json
+vendor/*

@@ -1,14 +1,14 @@
 # MyOPAC Extension
 ## What is this?
-This is an simple application to make MyOPAC ( which is the system for the Univ. Tokyo Library) convenient.
+This is an simple application to make MyOPAC, which is the system for the Univ. Tokyo Library convenient.
 
-MyOPAC Extension does the following automatically:
+MyOPAC Extension does the following things automatically:
 
 * put the deadline for returning books on your Google Calendar
 * extend the deadline when the deadline comes
 
 ## Installation
-Clone MyOPAC Extension to your server (a local server is OK).
+Clone MyOPAC Extension to your server.
 
 ```
 git clone https://github.com/karadaharu/myopac-extension.git

@@ -6,7 +6,7 @@ require_once APP_ROOT. '/vendor/autoload.php';
 require_once APP_ROOT. '/lib/MyGoogleCal.php';
 
 
-$my_google_cal = new MyGoogleCal();
+$my_google_cal = new MyGoogleCal($_GET["code"]);
 
 /* cron への登録 */
 if(($cron = popen("/usr/bin/crontab -", "w"))){

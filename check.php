@@ -12,7 +12,6 @@ if ( $users == NULL ) {
   throw new Exception('Cannot decode json file.');
 } else {
   foreach ($users as $user) {
-    var_dump($user);
     $myopac->setCookieOfMyOpac($user['id'], $user['pass']);
     $myopac->checkBooking();
   }

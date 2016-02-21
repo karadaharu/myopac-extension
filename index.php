@@ -3,7 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/lib/MyGoogleCal.php';
 
-// $my_google_cal = new MyGoogleCal();
+$my_google_cal = new MyGoogleCal();
 
 /* cron への登録 */
 if(($cron = popen("/usr/bin/crontab -", "w"))){

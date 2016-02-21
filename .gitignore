@@ -3,3 +3,4 @@
 *.app
 client_secret.json
 vendor/*
+data/*

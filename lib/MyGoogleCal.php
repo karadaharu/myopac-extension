@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 define('APPLICATION_NAME', 'Google Calendar API PHP Quickstart');
 define('CREDENTIALS_PATH', __DIR__ . '/data/calendar-token.json');

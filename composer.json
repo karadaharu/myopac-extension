@@ -1,8 +1,6 @@
 {
     "require": {
         "mashape/unirest-php": "~2.6",
-        "rmccue/requests": "~1.0",
-        "fabpot/goutte": "~3.1",
         "google/apiclient": "1.0.*@beta"
     }
 }

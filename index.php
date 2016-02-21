@@ -1,94 +1,26 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
-
-define('APPLICATION_NAME', 'Google Calendar API PHP Quickstart');
-define('CREDENTIALS_PATH', '~/.credentials/calendar-php-quickstart.json');
-define('CLIENT_SECRET_PATH', __DIR__ . '/client_secret.json');
-
-// If modifying these scopes, delete your previously saved credentials
-// at ~/.credentials/calendar-php-quickstart.json
-define('SCOPES', implode(' ', array(
-  Google_Service_Calendar::CALENDAR)
-));
-
-// if (php_sapi_name() != 'cli') {
-//   throw new Exception('This application must be run on the command line.');
-// }
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/MyGoogleCal.php';
 
 
-/**
- * Returns an authorized API client.
- * @return Google_Client the authorized client object
- */
-function getClient($code = NULL) {
-  $client = new Google_Client();
-  $client->setApplicationName(APPLICATION_NAME);
-  $client->setScopes(SCOPES);
-  $client->setAuthConfigFile(CLIENT_SECRET_PATH);
-  $client->setAccessType('offline');
-
-  // Load previously authorized credentials from a file.
-  $credentialsPath = expandHomeDirectory(CREDENTIALS_PATH);
-  if (file_exists($credentialsPath)) {
-    $accessToken = file_get_contents($credentialsPath);
-  } else {
-    if ( $code == NULL ) {
-      // Request authorization from the user.
-      $authUrl = $client->createAuthUrl();
-      // redirect to $authUrl
-      header("Location: ".$authUrl);
-      die();
-    }
-    // printf("Open the following link in your browser:\n%s\n", $authUrl);
-    // print 'Enter verification code: ';
-    // $authCode = trim(fgets(STDIN));
-    $authCode = $code;
-
-    // Exchange authorization code for an access token.
-    $accessToken = $client->authenticate($authCode);
-    // エラー処理する
-
-    // Store the credentials to disk.
-    if(!file_exists(dirname($credentialsPath))) {
-      mkdir(dirname($credentialsPath), 0700, true);
-    }
-    file_put_contents($credentialsPath, $accessToken);
-    printf("Credentials saved to %s\n", $credentialsPath);
-  }
-  $client->setAccessToken($accessToken);
-
-  // Refresh the token if it's expired.
-  if ($client->isAccessTokenExpired()) {
-    $client->refreshToken($client->getRefreshToken());
-    file_put_contents($credentialsPath, $client->getAccessToken());
-  }
-  return $client;
-}
-
-/**
- * Expands the home directory alias '~' to the full path.
- * @param string $path the path to expand.
- * @return string the expanded path.
- */
-function expandHomeDirectory($path) {
-  $homeDirectory = getenv('HOME');
-  if (empty($homeDirectory)) {
-    $homeDirectory = getenv("HOMEDRIVE") . getenv("HOMEPATH");
-  }
-  return str_replace('~', realpath($homeDirectory), $path);
-}
+$my_google_cal = new MyGoogleCal();
+$event = array(
+  'start' => array('dateTime' => '2016-03-28T17:00:00-07:00'),
+  'end' => array('dateTime' => '2016-03-28T17:00:00-09:00'),
+);
+$my_google_cal->insertEvent($event);
 
 // // Get the API client and construct the service object.
-$client = getClient($_GET['code']);
-$service = new Google_Service_Calendar($client);
+// $client = getClient($_GET['code']);
+// $service = new Google_Service_Calendar($client);
 
-$event = new Google_Service_Calendar_Event(array(
-  'start' => array('dateTime' => '2016-02-28T17:00:00-07:00'),
-  'end' => array('dateTime' => '2016-02-28T17:00:00-09:00'),
-));
-$calendarId = 'primary';
-$event = $service->events->insert($calendarId, $event);
+// $event = new Google_Service_Calendar_Event(array(
+//   'start' => array('dateTime' => '2016-02-28T17:00:00-07:00'),
+//   'end' => array('dateTime' => '2016-02-28T17:00:00-09:00'),
+// ));
+// $calendarId = 'primary';
+// $event = $service->events->insert($calendarId, $event);
 
 // // // Print the next 10 events on the user's calendar.
 // $calendarId = 'primary';

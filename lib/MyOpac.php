@@ -1,7 +1,7 @@
 <?php
 
-require_once '../vendor/autoload.php';
-require_once 'MyGoogleCal.php';
+require_once APP_ROOT.'/vendor/autoload.php';
+require_once APP_ROOT.'/lib/MyGoogleCal.php';
 
 class MyOpac{
   var $url_base;

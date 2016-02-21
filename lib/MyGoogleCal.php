@@ -1,10 +1,10 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once APP_ROOT.'/vendor/autoload.php';
 
 define('APPLICATION_NAME', 'Google Calendar API PHP Quickstart');
-define('CREDENTIALS_PATH', __DIR__ . '/data/calendar-token.json');
-define('CLIENT_SECRET_PATH', __DIR__ . '/data/client_secret.json');
+define('CREDENTIALS_PATH', APP_ROOT.'/data/calendar-token.json');
+define('CLIENT_SECRET_PATH', APP_ROOT.'/data/client_secret.json');
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/calendar-php-quickstart.json

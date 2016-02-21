@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/MyGoogleCal.php';
 
-date_default_timezone_set('Asia/Tokyo');
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/lib/MyGoogleCal.php';
 
 class MyOpac{
   var $url_base;
@@ -32,7 +31,6 @@ class MyOpac{
     }
     $cookies_header = implode($cookies, " ");
     Unirest\Request::cookie($cookies_header);
-    echo $response->body;
     return $cookies;
   }
 
@@ -52,13 +50,14 @@ class MyOpac{
         continue;
       }
 
-      updateGoogleCal();
+      $title = $xpath->query('td[position()=7]', $node)[0]->nodeValue;
+      $this->updateGoogleCal($date, $title);
 
       // 延長
       if ( $date == date("Y-m-d") ) {
         $id_book = $xpath->query('td[position()=2]', $node)[0]->nodeValue;
         $id_phpsess = $xpath->query('//input[@name="PHPSESSID"]')[0]->nodeValue;
-        extendDate($id_book, $id_phpsess);
+        $this->extendDate($id_book, $id_phpsess);
       }
     }
   }
@@ -83,21 +82,16 @@ class MyOpac{
 
   /**
    * Google Calendarに返却日を入れる
-   // すでにあるかどうかチェックしないといけない
+   * @param $date string Y.m.d
+   * @param $title string title of a book
    */
-  function updateGoogleCal(){
+  function updateGoogleCal($date, $title){
     $event = array();
     $date = str_replace('.', '-', $date);
     $event['start'] = array('date' => $date);
     $event['end'] = array('date' => $date);
 
-    $title = $xpath->query('td[position()=7]', $node)[0]->nodeValue;
     $event['summary'] = '返却期限:'.$title;
-    test();
+    $this->my_google_cal->insertEvent($event);
   }
 }
-
-
-$myopac = new MyOpac();
-$myopac->setCookieOfMyOpac("6044439136", "imakarakk02");
-$myopac->checkBooking();

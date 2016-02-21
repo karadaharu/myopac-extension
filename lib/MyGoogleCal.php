@@ -3,8 +3,8 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 define('APPLICATION_NAME', 'Google Calendar API PHP Quickstart');
-define('CREDENTIALS_PATH', '~/.credentials/calendar-php-quickstart.json');
-define('CLIENT_SECRET_PATH', __DIR__ . '/client_secret.json');
+define('CREDENTIALS_PATH', __DIR__ . '/data/calendar-token.json');
+define('CLIENT_SECRET_PATH', __DIR__ . '/data/client_secret.json');
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/calendar-php-quickstart.json
@@ -87,11 +87,37 @@ class MyGoogleCal {
 
   /**
    * イベントを登録
-   * @param array Google Calendar event
+   * @param array array for Google Calendar event
    */
   function insertEvent($event){
+    $this->deleteSameEvent($event);
     $event = new Google_Service_Calendar_Event($event);
     $event = $this->service->events->insert($this->calendarId, $event);
     return $event;
+  }
+
+  /**
+   * 同じタイトルのイベントを消す
+   * @param array array for Google Calendar event
+   */
+  function deleteSameEvent($event) {
+    $params_opt = array(
+      "q" => $event["summary"]
+    );
+    $events_exists = $this->service->events->listEvents($this->calendarId, $params_opt);
+    while(true) {
+      foreach ($events_exists->getItems() as $e) {
+        if ( $e->getSummary() == $event["summary"] ) {
+          $this->service->events->delete($this->calendarId, $e->id);
+        }
+      }
+      $pageToken = $events_exists->getNextPageToken();
+      if ($pageToken) {
+        $optParams = array('pageToken' => $pageToken);
+        $events_exists = $service->events->listEvents('primary', $optParams);
+      } else {
+        break;
+      }
+    }
   }
 }
